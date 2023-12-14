@@ -34,19 +34,19 @@ router.get('/:id', (req, res) => {
 });
 
 
-/*router.post('/add', (req,res) => {
-    const { imdbID, title, year, poster } = req.body;
+router.post('/add', (req, res) => {
+    const { title, price, description, created_at, updated_at } = req.body;
 
-    const sql = "INSERT INTO Movies(imdbID, title, year, poster) VALUES(?, ?, ?, ?)";
+    const sql = "INSERT INTO products(title, price, description, created_at, updated_at) VALUES(?, ?, ?, ?, ?)";
 
-    db.query(sql, [imdbID, title, year, poster], (err, result) => {
-        if(err) {
-            console.log('err ajoute d\'un film');
-            res.status(500).json({ message : err })
-        } else{
+    db.query(sql, [title, price, description, created_at, updated_at], (err, results) => {
+        if (err) {
+            console.log('Erreur lors de l\'ajout d\'un produit');
+            res.status(500).json({ message: err });
+        } else {
             res.status(200).json(results);
         }
-    })
-})*/
+    });
+});
 
 module.exports = router;
