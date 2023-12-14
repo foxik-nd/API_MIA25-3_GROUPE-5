@@ -1,7 +1,5 @@
 require('dotenv').config();
 let mysql = require('mysql');
-const { connect } = require('../routes/products');
-const { connect } = require('../routes/users');
 
 const dbHost = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
