@@ -5,7 +5,7 @@ const db = require('../config/database');
 
 router.get('/', (req,res) => {
     res.render('index',{title: 'Products page'});
-    res.statue(200).send('Ici c\'est pour les produits')
+    res.status(200).send('Ici c\'est pour les produits')
 
     const sql = "SELECT * FROM products"; 
 
