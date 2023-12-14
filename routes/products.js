@@ -34,19 +34,36 @@ router.get('/:id', (req, res) => {
 });
 
 
+
+// L'ajout d'un produit 
 router.post('/add', (req, res) => {
-    const { title, price, description, created_at, updated_at } = req.body;
+    const { title, price, description } = req.body;
 
-    const sql = "INSERT INTO products(title, price, description, created_at, updated_at) VALUES(?, ?, ?, ?, ?)";
+    const checkProductQuery = "SELECT * FROM products WHERE title = ?";
 
-    db.query(sql, [title, price, description, created_at, updated_at], (err, results) => {
-        if (err) {
-            console.log('Erreur lors de l\'ajout d\'un produit');
-            res.status(500).json({ message: err });
+    db.query(checkProductQuery, [title], (error, results) => {
+        if (error) {
+            console.log('Erreur lors de la vérification du produit existant');
+            res.status(500).json({ message: checkErr });
         } else {
-            res.status(200).json(results);
+            // Si le produit n'existe pas, procéder à l'ajout
+            if (results.length === 0) {
+                const insertProduct = "INSERT INTO products(title, price, description) VALUES (?, ?, ?)";
+
+                db.query(insertProduct, [title, price, description], (errorInsert, results) => {
+                    if (errorInsert) {
+                        console.log('Erreur lors de l\'ajout d\'un produit');
+                        res.status(500).json({ message: errorInsert });
+                    } else {
+                        res.status(200).json({ message: 'Produit ajouté' });
+                    }
+                });
+            } else {
+                res.status(400).json({ message: 'Le produit existe déjà ' });
+            }
         }
     });
 });
+
 
 module.exports = router;
